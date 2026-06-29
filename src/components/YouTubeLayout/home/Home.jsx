@@ -5,6 +5,7 @@ import { fetchVideos } from "../../../redux/Slices/videoSlice";
 import SkeletonLoader from "./SkeletonLoader";
 import NotFound from "./NotFound";
 import VideoCards from "./VideoCards";
+import { filterVideosByQuery } from "../utils/videoSearch";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,14 +19,7 @@ const Home = () => {
     }
   }, [dispatch, videos.length]);
 
-  const filteredvideos = videos.filter((card) => {
-    if (!activeQuery) return true;
-    const q = activeQuery.toLowerCase().trim();
-    const inTitle = card.title?.toLowerCase().includes(q);
-    const inChannel = card.channelName?.toLowerCase().includes(q);
-    const inTags = (card.tags || []).some((t) => t.toLowerCase().includes(q));
-    return inTitle || inChannel || inTags;
-  });
+  const filteredVideos = filterVideosByQuery(videos, activeQuery);
 
   return (
     <div className="bg-gray-100 min-h-screen p-0 sm:px-6 w-full">
@@ -35,10 +29,10 @@ const Home = () => {
 
       {loading ? (
         <SkeletonLoader />
-      ) : activeQuery || filteredvideos.length === 0 ? (
+      ) : activeQuery && filteredVideos.length === 0 ? (
         <NotFound />
       ) : (
-        <VideoCards filteredvideos={filteredvideos} />
+        <VideoCards filteredVideos={filteredVideos} />
       )}
     </div>
   );

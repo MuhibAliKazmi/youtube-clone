@@ -17,7 +17,7 @@ export const loginUser = createAsyncThunk(
 
       localStorage.setItem("user", JSON.stringify(user.name));
       return user;
-    } catch (err) {
+    } catch {
       return rejectWithValue("Login failed. Try again.");
     }
   }
@@ -36,7 +36,7 @@ export const signupUser = createAsyncThunk(
 
       localStorage.setItem("user", JSON.stringify(created.name));
       return created;
-    } catch (err) {
+    } catch {
       return rejectWithValue("Signup failed. Try again.");
     }
   }

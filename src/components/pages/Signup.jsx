@@ -15,18 +15,14 @@ const Signup = () => {
 
   function validateInput(name, email, password) {
     const newErrors = {};
-    let hasError = false;
     if (!name.trim()) {
       newErrors.name = "Full name is required";
-      hasError = true;
     }
     if (!email.trim()) {
       newErrors.email = "Email is required";
-      hasError = true;
     }
     if (!password.trim()) {
       newErrors.password = "Password is required";
-      hasError = true;
     }
     return newErrors;
   }

@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-
 import { useDispatch } from "react-redux";
-import { setActiveQuery } from "../../../redux/Slices/videoSlice";
+import { setActiveQuery, setSearchQuery } from "../../../redux/Slices/videoSlice";
 import {
   AiFillHome,
   AiOutlineFire,
@@ -24,9 +22,8 @@ import {
   MdSettings,
   MdHelp,
 } from "react-icons/md";
-import { useTheme } from "../../context/ThemeContext";
 const Sidebar = ({ isOpen }) => {
-  const { theme, toggleTheme } = useTheme();
+  const dispatch = useDispatch();
   const mainItems = [
     { label: "Home", icon: <AiFillHome /> },
     { label: "Shorts", icon: <AiOutlineFire /> },
@@ -78,8 +75,6 @@ const Sidebar = ({ isOpen }) => {
       ))}
     </div>
   );
-
-  const dispatch = useDispatch();
   return (
     <aside
       className={`h-full overflow-y-auto scrollbar-hide hidden md:block shadow-md border-r transition-all duration-300 ease-in-out

@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useDebounce } from "../../hooks/useDebounce";
 import SearchInput from "./SearchInput";
 import SearchSuggestions from "./SearchSuggestions";
 import VoiceSearch from "../VoiceSearch";
@@ -8,26 +7,29 @@ import {
   setActiveQuery,
   setSearchQuery,
 } from "../../../../redux/Slices/videoSlice";
-import { useVideoFilter } from "../../hooks/useVideoFilter";
 import { FaSearch } from "react-icons/fa";
+import {
+  getSearchSuggestions,
+  normalizeSearchQuery,
+} from "../../utils/videoSearch";
 const SearchBar = ({ onSearchSelect }) => {
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.videos.items);
   const searchQuery = useSelector((state) => state.videos.searchQuery);
   const [isFocused, setIsFocused] = useState(false);
 
-  const { matches, filteredVideos } = useVideoFilter(videos);
-  const debouncedFilter = useDebounce(filteredVideos, 500);
-
-  useEffect(() => {
-    debouncedFilter(searchQuery);
-  }, [searchQuery]);
+  const matches = getSearchSuggestions(videos, searchQuery);
 
   const handleSubmit = () => {
-    if (searchQuery == "") {
-      setActiveQuery("");
+    const query = normalizeSearchQuery(searchQuery);
+    if (!query) {
+      dispatch(setActiveQuery(""));
+      dispatch(setSearchQuery(""));
+      onSearchSelect("");
+      return;
     }
-    onSearchSelect(searchQuery);
+
+    onSearchSelect(query);
   };
 
   return (
@@ -35,7 +37,10 @@ const SearchBar = ({ onSearchSelect }) => {
       <div className="flex flex-1 relative">
         <SearchInput
           value={searchQuery}
-          onChange={(q) => dispatch(setSearchQuery(q))}
+          onChange={(q) => {
+            dispatch(setSearchQuery(q));
+            dispatch(setActiveQuery(q));
+          }}
           onSubmit={handleSubmit}
           isFocused={isFocused}
           setIsFocused={setIsFocused}
@@ -49,7 +54,13 @@ const SearchBar = ({ onSearchSelect }) => {
         </button>
 
         {isFocused && matches.length > 0 && (
-          <SearchSuggestions matches={matches} onSelect={onSearchSelect} />
+          <SearchSuggestions
+            matches={matches}
+            onSelect={(query) => {
+              dispatch(setSearchQuery(query));
+              onSearchSelect(query);
+            }}
+          />
         )}
       </div>
 
