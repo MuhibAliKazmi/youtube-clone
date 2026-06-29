@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  body {
+    @apply bg-youtube-dark text-youtube-text font-youtube;
+  }
+}
+
+:root {
+  --bg-color: white;
+  --text-color: black;
+}
+
+[data-theme="dark"] {
+  --bg-color: #333;
+  --text-color: white;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* keep this (no change) for tags */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* sidebar: hide by default, show thin thumb on hover */
+.sidebar-scroll {
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge: hide by default */
+  scrollbar-width: none; /* Firefox: hide by default */
+}
+
+/* WebKit default: invisible track so nothing shows */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+/* show on hover */
+.sidebar-scroll:hover {
+  scrollbar-width: thin; /* Firefox: show thin */
+  -ms-overflow-style: auto; /* IE/Edge: allow scrollbar */
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar {
+  background: transparent;
+  display: block;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+}
