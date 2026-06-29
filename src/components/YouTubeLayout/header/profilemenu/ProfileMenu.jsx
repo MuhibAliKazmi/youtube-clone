@@ -2,7 +2,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoLanguage } from "react-icons/io5";
 import { FiHelpCircle, FiSettings } from "react-icons/fi";
 import { MdFeedback } from "react-icons/md";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../../context/useTheme";
 import { FaMoon, FaSun } from "react-icons/fa";
 const ProfileMenu = ({ onSignOut }) => {
   const user = JSON.parse(localStorage.getItem("user") || "null");

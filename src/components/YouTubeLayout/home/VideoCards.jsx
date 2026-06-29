@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-function VideoCards({ filteredvideos }) {
+function VideoCards({ filteredVideos }) {
   const generateAvatar = (name = "") => {
     const firstLetter = name.split(" ")[0]?.[0]?.toUpperCase() || "A";
     return `https://ui-avatars.com/api/?name=${firstLetter}&background=random&color=fff`;
@@ -8,7 +8,7 @@ function VideoCards({ filteredvideos }) {
   return (
     <div>
       <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 3xl:grid-cols-5">
-        {filteredvideos.map((card) => (
+        {filteredVideos.map((card) => (
           <li key={card.id}>
             <Link to={`/watch/${card.id}`}>
               <div

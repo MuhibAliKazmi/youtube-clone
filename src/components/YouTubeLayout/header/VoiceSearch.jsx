@@ -3,16 +3,15 @@ import { FaMicrophone } from "react-icons/fa";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import VoiceStatus from "./VoiceStatus";
-import { useDebounce } from "../hooks/useDebounce";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import VoiceStatus from "./VoiceStatus";
 import { setActiveQuery } from "../../../redux/Slices/videoSlice";
-import { replace, useNavigate } from "react-router-dom";
 
 function VoiceSearch({ setSearchQuery }) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     transcript,
     listening,
@@ -23,19 +22,6 @@ function VoiceSearch({ setSearchQuery }) {
   if (!browserSupportsSpeechRecognition) {
     return <p>Browser does not support voice search.</p>;
   }
-  const navigate = useNavigate();
-  const debouncedSearch = useDebounce((text) => {
-    dispatch(setActiveQuery(text));
-    setSearchQuery(text);
-    navigate("/", { replace: false });
-    setShowModal(false);
-  }, 2000);
-
-  useEffect(() => {
-    if (transcript) {
-      debouncedSearch(transcript);
-    }
-  }, [transcript]);
 
   const startListening = () => {
     setShowModal(true);
@@ -44,7 +30,10 @@ function VoiceSearch({ setSearchQuery }) {
 
   const stopListening = () => {
     SpeechRecognition.stopListening();
-    setSearchQuery(transcript);
+    const query = transcript.trim();
+    dispatch(setActiveQuery(query));
+    setSearchQuery(query);
+    navigate("/", { replace: false });
     resetTranscript();
     setShowModal(false);
   };

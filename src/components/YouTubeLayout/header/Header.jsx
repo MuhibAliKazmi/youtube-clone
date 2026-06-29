@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { FaBars, FaVideo, FaBell, FaSearch } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { FaBars, FaVideo, FaBell } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import {
   setSearchQuery,
@@ -13,8 +13,6 @@ import ProfileMenu from "../header/profilemenu/ProfileMenu";
 const Header = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const videos = useSelector((state) => state.videos.items);
-  const searchQuery = useSelector((state) => state.videos.searchQuery);
   const [openMenu, setOpenMenu] = useState(false);
 
   const handleSelect = (query) => {
@@ -48,12 +46,7 @@ const Header = ({ toggleSidebar }) => {
         </Link>
       </div>
 
-      <SearchBar
-        videos={videos}
-        searchQuery={searchQuery}
-        onSearchSelect={handleSelect}
-        setSearchQuery={(q) => dispatch(setSearchQuery(q))}
-      />
+      <SearchBar onSearchSelect={handleSelect} />
 
       <div className="flex items-center gap-3 sm:gap-6 text-2xl text-gray-700">
         <FaVideo className="cursor-pointer w-5 hidden sm:flex" />
